@@ -47,7 +47,10 @@ def main():
     running  = True
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument("-i", "--image", type=str, default="C:/Users/aulou/Desktop/Battle-Game/view/Map_Uni.png",
+    script_folder = os.path.dirname(os.path.abspath(__file__))
+    adresse = script_folder + "/Map_Uni.png"
+    adresse_corrige = os.path.normpath(adresse)
+    ap.add_argument("-i", "--image", type=str, default=adresse_corrige,
 	help="path to the input image")
     args = vars(ap.parse_args())
     image = cv2.imread(args["image"])
