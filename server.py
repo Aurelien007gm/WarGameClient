@@ -11,7 +11,7 @@ from territory import (Territory,TerritoryMultiple,TerritoryCard,TerritoryElepha
 
 class Server():
     def __init__(self):
-        self.server_url = 'http://127.0.0.1:8000'
+        self.server_url = 'http://192.168.1.64:8000'
         self.id = int(input("Enter votre id : "))
         self.json = self.GetJson()
         playerjson = self.json["players"]
