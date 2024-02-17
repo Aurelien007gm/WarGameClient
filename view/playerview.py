@@ -99,7 +99,10 @@ def main():
                     act.print()
                     act = None
         # create a surface object, image is drawn on it.
-        imp = pygame.image.load("C:\\Users\\aulou\\Desktop\\Battle-Game\\view\\Map.png").convert()
+        script_folder = os.path.dirname(os.path.abspath(__file__))
+        ##imp = pygame.image.load("C:\\Users\\aulou\\Desktop\\Battle-Game\\view\\Map.png").convert()
+        adresse = script_folder + "\\Map.png"
+        imp = pygame.image.load(adresse).convert()
  
 # Using blit to copy content from one surface to other
         surface.blit(imp, (0, 0))
