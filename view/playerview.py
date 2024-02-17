@@ -101,7 +101,7 @@ def main():
         # create a surface object, image is drawn on it.
         script_folder = os.path.dirname(os.path.abspath(__file__))
         ##imp = pygame.image.load("C:\\Users\\aulou\\Desktop\\Battle-Game\\view\\Map.png").convert()
-        adresse = script_folder + "\\Map.png"
+        adresse = script_folder + "/Map.png"
         adresse_corrige = os.path.normpath(adresse)
         imp = pygame.image.load(adresse_corrige).convert()
  
