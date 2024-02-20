@@ -5,12 +5,6 @@ import os
 import time  # Import the time module
 
 import sys
- 
-# setting path
-sys.path.append('c:\\Users\\aulou\\Desktop\\WarGame\\WarGameClient')
-script_folder = os.path.dirname(os.path.abspath(__file__))
-print(sys.path)
-print(script_folder)
 
 from action import Action, ActionHandler
 from territorymanager import TerritoryManager
