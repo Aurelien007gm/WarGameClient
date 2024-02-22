@@ -14,18 +14,19 @@ class Server():
         self.ip = input("Entrez l'ip du serveur")
         ##self.server_url = 'http://192.168.1.64:8000'
         self.server_url = "http://" + self.ip + ":8000"
-        self.id = int(input("Enter votre id : "))
+        self.playerid = int(input("Enter votre id : "))
         self.json = self.GetJson()
         playerjson = self.json["players"]
         self.players = []
         self.tm = None
         self.round = 1
-        self.INIT()
+        self.InitTerritories()
+        terrjson = self.json["territories"]
         for p in playerjson:
             kwargs = {"name": p["name"],"id":p["id"],"color": self.GetColor(p["id"])}
             self.players.append(Player(**kwargs))
 
-        terrjson = self.json["territories"]
+
         for t in terrjson:
             id = t["id"]
             owner_id = t["owner_id"]
@@ -75,6 +76,8 @@ class Server():
     
     def GetPlayerFromId(self, id):
         res = None
+        if (id == -1):
+            res = Animal()
         for p in self.players:
             if(p.id == id):
                 res = p
@@ -91,7 +94,8 @@ class Server():
             return(255,255,0)
     
     def ValidatePlay(self):
-        req = {"action":"validate","player_id":self.id}
+        print("Action valide pour ce joueur")
+        req = {"action":"validate","player_id":self.playerid}
         response = requests.post(self.server_url,json = req)
         return(response)
     
@@ -104,28 +108,9 @@ class Server():
         json_data = {"action":"action","acts":[myact]}
         response = requests.post(self.server_url, json=json_data)
 
-    def INIT(self,**kwargs):
+    def InitTerritories(self,**kwargs):
         t = []
         animals = Animal()
-        """
-        for i in range(16):
-            if(i== 11):
-                terr = TerritoryMultiple(**{"name": "Territoire des arbres centenaires "+str(i),"id": i,"animals":animals})
-            elif(i==8):
-                terr = TerritoryCard(**{"name": "Territoire de la nuit sans fin "+str(i),"id": i,"animals":animals})
-            elif(i==15):
-                terr = TerritoryGorilla(**{"name": "Territoire de la jungle sauvage "+str(i),"id": i,"animals":animals})
-            elif(i==9):
-                terr = TerritoryAlpaga(**{"name": "Territoire du vaste Salar "+str(i),"id": i,"animals":animals})
-            elif(i==6):
-                terr = TerritoryCoati(**{"name": "Territoire du vaste Salar "+str(i),"id": i,"animals":animals})
-            elif(i==4):
-                terr = TerritoryYack(**{"name": "Territoire des collines verdiyante "+str(i),"id": i,"animals":animals})
-            elif(i==2):
-                terr = TerritoryElephant(**{"name": "Territoire des volcants étincelants "+str(i),"id": i,"animals":animals})
-            else:
-                terr = Territory(**{"name": "Jungle "+str(i),"id": i,"animals":animals})
-            t.append(terr)"""
         
         t.append(Territory(**{"name": "Jungle 0","id":0 ,"animals":animals}))
         t.append(Territory(**{"name": "Jungle 1","id":1 ,"animals":animals}))
@@ -142,6 +127,10 @@ class Server():
         t.append(Territory(**{"name": "Jungle 12","id":12 ,"animals":animals}))
         t.append(Territory(**{"name": "Jungle 13","id":13 ,"animals":animals}))
         t.append(Territory(**{"name": "Jungle 14","id":14 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 15","id":15 ,"animals":animals}))
+        t.append(Territory(**{"name": "Jungggle 15","id":15 ,"animals":animals}))
+        t.append(Territory(**{"name": "Jungle 16","id":16 ,"animals":animals}))
+        t.append(Territory(**{"name": "Jungle 17","id":17 ,"animals":animals}))
+        t.append(Territory(**{"name": "Jungle 18","id":18 ,"animals":animals}))
+        t.append(Territory(**{"name": "Jungggle 19","id":19 ,"animals":animals}))
         ##t = kwargs["territories"]
         self.tm = TerritoryManager(territories = t)

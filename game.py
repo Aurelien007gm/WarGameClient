@@ -5,7 +5,7 @@ from player import Player
 
 # Main instance of a game
 class Game:
-    def __init__(self, players_json):
+    def __init__(self, players_json,territory_json):
         name = [p.get('name') for p in players_json]
         is_bot = [p.get('bot') for p in players_json]
         self.players = []

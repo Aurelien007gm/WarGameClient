@@ -35,7 +35,8 @@ class Territory:
         return(nb)
     
     def print(self):
-        print("Territory " + self.name + " is owned by player number " +str(self.owner.name) + " and has :" + str(self.troop))
+        owner_name = "None" if self.owner is None else str(self.owner.name)
+        print("Territory " + self.name + " is owned by player number " +owner_name + " and has :" + str(self.troop))
         #print(self.troop)
 
 class TerritoryMultiple(Territory):
