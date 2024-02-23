@@ -9,6 +9,12 @@ class Form:
         self.root = tk.Tk()
         self.root.title("Sélection du Formulaire")
 
+        description_label = tk.Label(self.root, text=f"This is territory {territory.name}")
+        description_label.pack(pady=10)
+
+        description_label = tk.Label(self.root, text= territory.effect)
+        description_label.pack(pady=10)
+
         # Boutons pour sélectionner le formulaire
         tk.Button(self.root, text="Déploiement", command=self.open_deploy_form).pack(pady=10)
         tk.Button(self.root, text="Attaque", command=self.open_attack_form).pack(pady=10)
@@ -106,6 +112,7 @@ class FormDeploy:
             self.field.set(0)
             self.navy.set(0)
             self.para.set(0)
+            self.Update()
             return
         
                 # Cacher le message d'erreur s'il était affiché
@@ -120,8 +127,7 @@ class FormDeploy:
         self.player.money -= self.cost.get()
         act = Action("Deploy",**{"t0":self.territory.id,"field":field,"navy":navy,"para":para})
         self.server.Call(act)
-        self.Update()
-        return
+        self.form.destroy()
 
     def Update(self, *args):
         self.ComputeCost()
@@ -131,7 +137,7 @@ class FormDeploy:
 
 
     def ComputeCost(self):
-        price = {"field": 1000, "navy": 1200, "para": 1500}
+        price = {"field": 1000, "navy": 1500, "para": 2000}
         troops = {"field": self.field.get() or 0, "navy": self.navy.get()or 0, "para": self.para.get() or 0}
         cost = 0
         for key, value in troops.items():
@@ -196,6 +202,8 @@ class FormTransfer:
         troop = {"field":field,"navy":navy,"para":para}
         self.view.viewhandler.SetTransfer(troop)
         self.view.viewhandler.SetSource(self.territory)
-        return
+        self.form.destroy
 
+class FormEnemy:
+    pass
 

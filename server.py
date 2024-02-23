@@ -15,13 +15,14 @@ class Server():
         ##self.server_url = 'http://192.168.1.64:8000'
         self.server_url = "http://" + self.ip + ":8000"
         self.playerid = int(input("Enter votre id : "))
-        self.json = self.GetJson()
-        playerjson = self.json["players"]
+        self.gamejson = self.GetGameJson()
+        self.staticterritoriesjson = self.GetStaticTerritoriesJson()
+        playerjson = self.gamejson["players"]
         self.players = []
         self.tm = None
         self.round = 1
         self.InitTerritories()
-        terrjson = self.json["territories"]
+        terrjson = self.gamejson["territories"]
         for p in playerjson:
             kwargs = {"name": p["name"],"id":p["id"],"color": self.GetColor(p["id"])}
             self.players.append(Player(**kwargs))
@@ -39,10 +40,15 @@ class Server():
             self.tm.territories[id].owner = owner
 
 
-    def GetJson(self):
+    def GetGameJson(self):
         get_game_response = requests.get(f'{self.server_url}/get_game_json')
         game_json = get_game_response.json()
         return(game_json)
+    
+    def GetStaticTerritoriesJson(self):
+        get_game_response = requests.get(f'{self.server_url}/get_territories_json')
+        t_json = get_game_response.json()
+        return(t_json)
     
     def SetDataFromJson(self):
         playerjson = self.json["players"]
@@ -64,7 +70,7 @@ class Server():
             self.tm.territories[id].owner = owner
     
     def GetUpdate(self):
-        json = self.GetJson()
+        json = self.GetGameJson()
         round = json["turn"]
         if(round > self.round):
             self.json = json
@@ -111,26 +117,14 @@ class Server():
     def InitTerritories(self,**kwargs):
         t = []
         animals = Animal()
-        
-        t.append(Territory(**{"name": "Jungle 0","id":0 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 1","id":1 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 2","id":2 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 3","id":3 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 4","id":4 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 5","id":5 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 6","id":6 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 7","id":7 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 8","id":8 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 9","id":9 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 10","id":10 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 11","id":11 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 12","id":12 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 13","id":13 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 14","id":14 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungggle 15","id":15 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 16","id":16 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 17","id":17 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungle 18","id":18 ,"animals":animals}))
-        t.append(Territory(**{"name": "Jungggle 19","id":19 ,"animals":animals}))
+
+        #for i in range(32):
+            #t.append(Territory(**{"name": f"Jungle{i}","id":i ,"animals":animals}))
         ##t = kwargs["territories"]
+        print(self.staticterritoriesjson)
+        for terr in self.staticterritoriesjson:
+            print(terr)
+            t.append(Territory(**{"name":terr["name"],"id":terr["id"],"animals":animals,"effect":terr["effect"]}))
+        # tri des territoires par id
+        t.sort(key=lambda terr : terr.id)
         self.tm = TerritoryManager(territories = t)

@@ -28,7 +28,7 @@ class CoreManager:
     def _Deploy(self,t:Territory,field,navy,para):
         owner = t.owner
         t.Deploy(**{"field":field,"navy":navy,"para":para})
-        price = {"field": 1000,"navy":1200,"para":1500}
+        price = {"field": 1000,"navy":1500,"para":2000}
         owner.AddMoney(-price["field"]*field)
         owner.AddMoney(-price["navy"]*navy)
         owner.AddMoney(-price["para"]*para)
@@ -42,7 +42,7 @@ class CoreManager:
             print("No territory to deploy")
             return
 
-        price = {"field": 1000,"navy":1200,"para":1500}
+        price = {"field": 1000,"navy":1500,"para":2000}
         cost = price["field"]*field + price["navy"]*navy + price["para"]*para
         t = self.tm.territories[territory]
 

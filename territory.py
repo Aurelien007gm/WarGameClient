@@ -14,7 +14,7 @@ class Territory:
         self.owner_name="None"
         self.troop = {"field":0,"navy":0,"para":0,"animals":0}
         self.value = kwargs.get("value") or 500
-        self.effect = "This territory has no effect"
+        self.effect = kwargs.get("effect") or "This territory has no effect"
         self.eventOn = False
 
     def ShowEffect(self):

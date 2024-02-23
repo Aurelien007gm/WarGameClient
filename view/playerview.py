@@ -130,7 +130,10 @@ class PlayerView:
 
         if(isinstance(command,int)):
             t = self.tm.territories[command]
-            form = Form(t,self.server,self)
+            if(t.owner.id == self.server.playerid):
+                form = Form(t,self.server,self)
+            else:
+                form = FormEnemy(t,self.server,self)
 
         if(command =="Run"):
             self.server.Run()
