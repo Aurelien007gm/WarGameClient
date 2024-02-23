@@ -68,6 +68,12 @@ class Server():
             self.tm.territories[id].owner_name = owner.name
             self.tm.territories[id].owner_id = owner_id
             self.tm.territories[id].owner = owner
+
+            event_on = t["event_on"]
+            event_countdown = t["event_countdown"]
+            self.tm.territories[id].eventOn = event_on
+            self.tm.territories[id].eventCountdown = event_countdown
+
     
     def GetUpdate(self):
         json = self.GetGameJson()

@@ -12,6 +12,10 @@ class Form:
         description_label = tk.Label(self.root, text=f"This is territory {territory.name}")
         description_label.pack(pady=10)
 
+        if(territory.eventOn):
+            description_label = tk.Label(self.root, text=f"Event On !")
+            description_label.pack(pady=10)
+
         description_label = tk.Label(self.root, text= territory.effect)
         description_label.pack(pady=10)
 
@@ -205,5 +209,27 @@ class FormTransfer:
         self.form.destroy
 
 class FormEnemy:
-    pass
+    def __init__(self,territory):
+        self.root = tk.Tk()
+        self.root.title("Territoire")
+
+        description_label = tk.Label(self.root, text=f"This is territory {territory.name}")
+        description_label.pack(pady=10)
+
+        description_label = tk.Label(self.root, text= territory.effect)
+        description_label.pack(pady=10)
+
+        if(territory.eventOn):
+            description_label = tk.Label(self.root, text=f"Event On !")
+            description_label.pack(pady=10)
+
+
+        tk.Button(self.root, text="Fermer", command=self.close_main_window).pack(pady=10)
+        self.run()
+
+    def run(self):
+        self.root.mainloop()
+
+    def close_main_window(self):
+        self.root.destroy()
 

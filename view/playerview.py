@@ -16,7 +16,7 @@ print(script_folder)
 from action import Action, ActionHandler
 from territorymanager import TerritoryManager
 from server import Server
-from view.form import Form
+from view.form import Form,FormEnemy
 from view.viewhandler import ViewHandler
 
 class PlayerView:
@@ -133,7 +133,7 @@ class PlayerView:
             if(t.owner.id == self.server.playerid):
                 form = Form(t,self.server,self)
             else:
-                form = FormEnemy(t,self.server,self)
+                form = FormEnemy(t)
 
         if(command =="Run"):
             self.server.Run()
@@ -399,6 +399,7 @@ def main():
             score_font = pygame.font.Font(None, 20)
             score_surf = score_font.render(str(troop["animals"]), 1, col)
             surface.blit(score_surf, [pos[0]+35,pos[1]])
+
 
             if(territory.eventOn):
                 score_font = pygame.font.Font(None, 20)

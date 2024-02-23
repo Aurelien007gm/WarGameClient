@@ -16,6 +16,7 @@ class Territory:
         self.value = kwargs.get("value") or 500
         self.effect = kwargs.get("effect") or "This territory has no effect"
         self.eventOn = False
+        self.eventCountdown = 0
 
     def ShowEffect(self):
         print(self.effect)
