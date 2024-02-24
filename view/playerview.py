@@ -42,6 +42,7 @@ class PlayerView:
             self.colorToAct[(b,g,r)] = index
 
         self.colorToAct[(0,220,0)] = "Run"
+        self.colorToAct[(144,144,144)] = "Log"
         self.actHandler = ActionHandler()
         SIZE = (741,680)
         self.surface = pygame.display.set_mode(SIZE)
@@ -76,6 +77,12 @@ class PlayerView:
             self.last_action_time = current_time
 
     def RunCommand(self,command):
+        if(command == "Log"):
+            log = self.server.GetLog()
+            print(log)
+            return
+
+
         if(self.viewhandler.isSelectingTerritoryForAttack):
             self.RunCommandAttack(command)
         elif(self.viewhandler.isSelectingTerritoryForTransfer):
@@ -201,26 +208,28 @@ class PlayerView:
             pos = coordFromTerr.get(id) or [0,0]
             col = territory.owner.color
 
-            score_font = pygame.font.Font(None, 20)
-            score_surf = score_font.render(str(troop["field"]), 1, col)
-            self.surface.blit(score_surf, [pos[0],pos[1]])
+            if(territory.owner_id >= 0):
 
-            score_font = pygame.font.Font(None, 20)
-            score_surf = score_font.render(str(troop["navy"]), 1, col)
-            self.surface.blit(score_surf, [pos[0]+10,pos[1]])
+                score_font = pygame.font.Font(None, 14)
+                score_surf = score_font.render(str(troop["field"]), 1, col)
+                self.surface.blit(score_surf, [pos[0]-10,pos[1]-4])
 
-            score_font = pygame.font.Font(None, 20)
-            score_surf = score_font.render(str(troop["para"]), 1, col)
-            self.surface.blit(score_surf, [pos[0]+20,pos[1]])
+                score_font = pygame.font.Font(None, 14)
+                score_surf = score_font.render(str(troop["navy"]), 1, col)
+                self.surface.blit(score_surf, [pos[0]+4,pos[1]-13])
 
-            score_font = pygame.font.Font(None, 20)
-            score_surf = score_font.render(str(troop["animals"]), 1, col)
-            self.surface.blit(score_surf, [pos[0]+35,pos[1]])
+                score_font = pygame.font.Font(None, 14)
+                score_surf = score_font.render(str(troop["para"]), 1, col)
+                self.surface.blit(score_surf, [pos[0]+4,pos[1]+4])
+            else:
+                score_font = pygame.font.Font(None, 14)
+                score_surf = score_font.render(str(troop["animals"]), 1, col)
+                self.surface.blit(score_surf, [pos[0],pos[1]])
 
             if(territory.eventOn):
-                score_font = pygame.font.Font(None, 20)
+                score_font = pygame.font.Font(None, 14)
                 score_surf = score_font.render("Event!", 1, col)
-                self.surface.blit(score_surf, [pos[0],pos[1]+10])
+                self.surface.blit(score_surf, [pos[0],pos[1]+15])
                 score_surf = score_font.render(str(territory.eventCountdown), 1, col)
                 self.surface.blit(score_surf, [pos[0],pos[1]+20])
 

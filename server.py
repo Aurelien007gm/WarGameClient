@@ -50,6 +50,12 @@ class Server():
         t_json = get_game_response.json()
         return(t_json)
     
+    def GetLog(self):
+        get_game_response = requests.get(f'{self.server_url}/get_log_json')
+        l_json = get_game_response.json()
+        return(l_json)
+
+    
     def SetDataFromJson(self):
         playerjson = self.json["players"]
         for p in playerjson:
@@ -99,7 +105,7 @@ class Server():
         if(i==0):
             return(0,0,255)
         if(i==1):
-            return(0,255,0)
+            return(40,255,100)
         if(i==2):
             return(255,0,0)
         if(i==3):
