@@ -201,6 +201,16 @@ class PlayerView:
         score_font = pygame.font.Font(None, 20)
         score_surf = score_font.render(str(player[3].money), 1, (0,0,0))
         self.surface.blit(score_surf, [420,547])
+
+        if(self.viewhandler.isSelectingTerritoryForAttack):
+            score_font = pygame.font.Font(None, 26)
+            score_surf = score_font.render("SELECT A TERRITORY TO ATTACK", 1,(0,0,0))
+            self.surface.blit(score_surf, [200,30])
+
+        if(self.viewhandler.isSelectingTerritoryForTransfer):
+            score_font = pygame.font.Font(None, 26)
+            score_surf = score_font.render("SELECT A TERRITORY TO TRANSFER TROOP", 1,(0,0,0))
+            self.surface.blit(score_surf, [200,30])
         
         for territory in self.server.tm.territories:
             id = territory.id

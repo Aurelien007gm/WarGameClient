@@ -11,7 +11,7 @@ from territory import (Territory,TerritoryMultiple,TerritoryCard,TerritoryElepha
 
 class Server():
     def __init__(self):
-        self.ip = input("Entrez l'ip du serveur")
+        self.ip = input("Entrez l'ip du serveur : ")
         ##self.server_url = 'http://192.168.1.64:8000'
         self.server_url = "http://" + self.ip + ":8000"
         self.playerid = int(input("Enter votre id : "))
@@ -105,7 +105,7 @@ class Server():
         if(i==0):
             return(0,0,255)
         if(i==1):
-            return(40,255,100)
+            return(255,100,100)
         if(i==2):
             return(255,0,0)
         if(i==3):
