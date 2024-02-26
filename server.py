@@ -13,7 +13,7 @@ class Server():
     def __init__(self):
         self.ip = input("Entrez l'ip du serveur : ")
         ##self.server_url = 'http://192.168.1.64:8000'
-        self.server_url = "http://" + self.ip + ":8000"
+        self.server_url = "http://" + self.ip + ":33800"
         self.playerid = int(input("Enter votre id : "))
         self.gamejson = self.GetGameJson()
         self.staticterritoriesjson = self.GetStaticTerritoriesJson()
