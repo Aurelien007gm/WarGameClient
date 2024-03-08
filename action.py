@@ -1,12 +1,13 @@
 class Action:
 
-    def  __init__(self,name,**kwargs):
-        self.name = name
+    def  __init__(self,action_name,**kwargs):
+
+        self.name = action_name # name could also be in kwargs for contracts
         self.args = kwargs
         self.value = self.GetValue()
 
     def GetValue(self):
-        dictionnary = {"Deploy":1,"DiscardCard":0.9,"Transfer":2,"Attack":3}
+        dictionnary = {"SetContract":0.5,"Deploy":1,"DiscardCard":0.9,"Transfer":2,"Attack":3}
         get = dictionnary.get(self.name) or 5
         return(get)
     

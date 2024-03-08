@@ -233,3 +233,94 @@ class FormEnemy:
     def close_main_window(self):
         self.root.destroy()
 
+
+class FormInfo:
+    def __init__(self, info_list):
+        self.root = tk.Tk()
+        self.root.title("Action du tour précédent")
+
+        scrollbar = tk.Scrollbar(self.root, orient="vertical")
+
+        # Créer un Text widget avec la scrollbar attachée
+        self.text_widget = tk.Text(self.root, wrap="none", yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.text_widget.yview)
+        
+        for info in info_list:
+            # Ajouter le texte au Text widget
+            self.text_widget.insert(tk.END, info + "\n")
+        
+        # Empêcher l'édition du texte par l'utilisateur
+        self.text_widget.config(state=tk.DISABLED)
+        
+        # Placer le Text widget et le bouton "Fermer" dans la fenêtre
+        self.text_widget.pack(pady=10, side="left", fill="both", expand=True)
+        tk.Button(self.root, text="Fermer", command=self.close_main_window).pack(pady=10)
+        
+        # Configurer la scrollbar
+        scrollbar.pack(side="right", fill="y")
+
+        self.run()
+
+    def run(self):
+        self.root.mainloop()
+
+    def close_main_window(self):
+        self.root.destroy()
+
+
+class FormContract:
+    def __init__(self,contract):
+        self.root = tk.Tk()
+        self.root.title("Contrat")
+
+        if contract is not None:
+            description_label = tk.Label(self.root, text=f"You have {contract.name}")
+            description_label.pack(pady=10)
+
+        
+            description_label = tk.Label(self.root, text=f"{contract.description}")
+            description_label.pack(pady=10)
+
+        else:
+            description_label = tk.Label(self.root, text=f"You have no contract")
+            description_label.pack(pady=10)
+
+
+
+        tk.Button(self.root, text="Fermer", command=self.close_main_window).pack(pady=10)
+        self.run()
+
+    def run(self):
+        self.root.mainloop()
+
+    def close_main_window(self):
+        self.root.destroy()
+
+class FormContractDraft:
+    def __init__(self,player):
+        self.root = tk.Tk()
+        self.root.title("Contrat")
+        self.player = player
+
+        
+        for i in range(3):
+            description_label = tk.Label(self.root, text=f"Contract {player.contracts_draft[i].name}")
+            description_label.pack(pady=10)
+            tk.Button(self.root, text="Take this contract", command=lambda i=i: self.TakeContract(i)).pack(pady=10)
+
+
+
+        tk.Button(self.root, text="Fermer", command=self.close_main_window).pack(pady=10)
+        self.run()
+
+    def run(self):
+        self.root.mainloop()
+
+    def TakeContract(self,n):
+        print(f"Taking contract {self.player.contracts_draft[n]}")
+        self.player.DrawContract(self.player.contracts_draft[n])
+        self.close_main_window()
+
+    def close_main_window(self):
+        self.root.destroy()
+

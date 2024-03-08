@@ -1,6 +1,7 @@
 import random as rd
 from card import Card
-from contract import Contract,Stingy
+from contract import Contract
+from action import Action
 class Player:
 
     def __init__(self,**kwargs):
@@ -9,10 +10,11 @@ class Player:
         self.id = kwargs.get("id") or 0
         self.color = kwargs.get("color") or (127,127,127)
         self.cards = []
-        self.contracts = []
+        self.contract = None
+        self.contracts_draft = []
+        self.server = kwargs.get("server") or None
         for i in range(10):
             self.cards.append(Card())
-        self.DrawContract()
 
 
 
@@ -20,6 +22,7 @@ class Player:
         self.money+= nb
         if(nb < 0):
             for contract in self.contracts:
+                # Fail contract that require to not spend money
                 contract.Fail("MoneySpend")
 
     def print(self):
@@ -45,11 +48,15 @@ class Player:
         self.cards.sort(key=lambda t:t.attack + t.defense)
         return(card)
     
-    def DrawContract(self):
-        contract = Stingy()
-        contract.player = self
-        contract.Print()
-        self.contracts.append(contract)
+    def DrawContract(self,contract):
+        self.contract = contract
+        kwargs = contract.ToJson()
+
+        act = Action("SetContract",**kwargs)
+        act.print() # to remove, to debug
+        self.server.Call(act)
+
+
 
 
     

@@ -3,6 +3,7 @@ import requests
 import json
 from player import Player, Animal
 from territorymanager import TerritoryManager
+from contract import Contract
 from territory import (Territory,TerritoryMultiple,TerritoryCard,TerritoryElephant,
                        TerritoryGorilla,TerritoryAlpaga,TerritoryCoati,TerritoryYack,
                        TerritoryChacal,TerritoryLama,TerritoryCoq,TerritoryFennec,TerritoryHyena,
@@ -16,6 +17,7 @@ class Server():
         self.server_url = "http://" + self.ip + ":33800"
         self.playerid = int(input("Enter votre id : "))
         self.gamejson = self.GetGameJson()
+        self.json = self.GetGameJson() # duplicate variable, to remove
         self.staticterritoriesjson = self.GetStaticTerritoriesJson()
         playerjson = self.gamejson["players"]
         self.players = []
@@ -24,7 +26,7 @@ class Server():
         self.InitTerritories()
         terrjson = self.gamejson["territories"]
         for p in playerjson:
-            kwargs = {"name": p["name"],"id":p["id"],"color": self.GetColor(p["id"])}
+            kwargs = {"name": p["name"],"id":p["id"],"color": self.GetColor(p["id"]),"server":self}
             self.players.append(Player(**kwargs))
 
 
@@ -38,6 +40,8 @@ class Server():
             self.tm.territories[id].owner_name = owner.name
             self.tm.territories[id].owner_id = owner_id
             self.tm.territories[id].owner = owner
+
+        self.SetDataFromJson()
 
 
     def GetGameJson(self):
@@ -58,10 +62,39 @@ class Server():
     
     def SetDataFromJson(self):
         playerjson = self.json["players"]
+
+        for contract_json in self.json["contracts"]:
+            player = self.GetPlayerFromId(contract_json["player_id"])
+            contract_json["player"] = player
+            contract = Contract(**contract_json)
+            player.contract = contract
+
+
+
+
         for p in playerjson:
             id = p["id"]
             player = self.GetPlayerFromId(id)
             player.money = p["money"]
+            contract_json = p.get("contract") or None
+  
+            if contract_json:
+                contract_json["player"] = player
+                contract = Contract(**contract_json)
+                player.contract = contract
+            else:
+                player.contract = None
+            
+            player.contracts_draft = []
+            print(("======================"))
+            print(p["contracts_drawn"])
+            for c in p["contracts_drawn"]:
+                name = c.get("name")
+                description = c.get("description")
+                arg = c.get("arg")
+                kwargs = {"name":name,"description":description,"arg":arg,"player":player}
+                contract = Contract(**kwargs)
+                player.contracts_draft.append(contract) 
 
         terrjson = self.json["territories"]
         for t in terrjson:
@@ -105,11 +138,11 @@ class Server():
         if(i==0):
             return(0,0,255)
         if(i==1):
-            return(255,100,100)
+            return(0,255,255)
         if(i==2):
-            return(255,0,0)
+            return(255,0,200)
         if(i==3):
-            return(255,255,0)
+            return(200,200,200)
     
     def ValidatePlay(self):
         print("Action valide pour ce joueur")

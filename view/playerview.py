@@ -16,7 +16,7 @@ print(script_folder)
 from action import Action, ActionHandler
 from territorymanager import TerritoryManager
 from server import Server
-from view.form import Form,FormEnemy
+from view.form import Form,FormEnemy,FormInfo, FormContract, FormContractDraft
 from view.viewhandler import ViewHandler
 
 class PlayerView:
@@ -43,6 +43,8 @@ class PlayerView:
 
         self.colorToAct[(0,220,0)] = "Run"
         self.colorToAct[(144,144,144)] = "Log"
+        self.colorToAct[(184,184,184)] = "Contract"
+
         self.actHandler = ActionHandler()
         SIZE = (741,680)
         self.surface = pygame.display.set_mode(SIZE)
@@ -73,14 +75,27 @@ class PlayerView:
             needUpdate = self.server.GetUpdate() 
             if(needUpdate):
                 print("Getting new version")
+
                 self.server.SetDataFromJson()
+                log = self.server.GetLog()
+                print(log["info"])
+                form_info = FormInfo(log["info"])
             self.last_action_time = current_time
 
     def RunCommand(self,command):
         if(command == "Log"):
             log = self.server.GetLog()
-            print(log)
+            print(log["log"])
             return
+        
+        if (command == "Contract"):
+            player = self.server.GetPlayerFromId(self.playerid)
+            contract = player.contract
+            if contract :
+                form = FormContract(contract)
+            else:
+                form = FormContractDraft(player)
+
 
 
         if(self.viewhandler.isSelectingTerritoryForAttack):
@@ -191,6 +206,10 @@ class PlayerView:
         self.surface.blit(score_surf, [280,547])
 
         score_font = pygame.font.Font(None, 20)
+        score_surf = score_font.render(f"Turn : {self.server.round}", 1, (0,0,0))
+        self.surface.blit(score_surf, [400,30])
+
+        score_font = pygame.font.Font(None, 20)
         score_surf = score_font.render(str(player[1].money), 1, (0,0,0))
         self.surface.blit(score_surf, [327,547])
 
@@ -270,7 +289,7 @@ def main():
     colorToAct[(0,0,255)] = "Player3"
     colorToAct[(0,255,255)] = "Player4"
     colorToAct[(100,0,0)] = "Effect"
-    colorToAct[(80,0,0)] = "Contract"
+    colorToAct[(50,0,0)] = "Contract"
     actHandler = ActionHandler()
 
     SIZE = 600
