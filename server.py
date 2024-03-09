@@ -12,7 +12,8 @@ from territory import (Territory,TerritoryMultiple,TerritoryCard,TerritoryElepha
 
 class Server():
     def __init__(self):
-        self.ip = input("Entrez l'ip du serveur : ")
+        config = self.LoadConfig()
+        self.ip = config.get("ip")
         ##self.server_url = 'http://192.168.1.64:8000'
         self.server_url = "http://" + self.ip + ":33800"
         self.playerid = int(input("Enter votre id : "))
@@ -42,6 +43,13 @@ class Server():
             self.tm.territories[id].owner = owner
 
         self.SetDataFromJson()
+
+    def LoadConfig(self):
+        try:
+            with open('config.json', 'r') as file:
+                return json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return {}
 
 
     def GetGameJson(self):

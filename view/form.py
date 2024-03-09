@@ -302,11 +302,17 @@ class FormContractDraft:
         self.root.title("Contrat")
         self.player = player
 
-        
+        rewards_text = ["Reward: 2 000, Penality: 200","Reward: 5 000, Panality: 1 500","Reward: 10 000, Peality: 5 000"]
         for i in range(3):
             description_label = tk.Label(self.root, text=f"Contract {player.contracts_draft[i].name}")
             description_label.pack(pady=10)
+            description_label = tk.Label(self.root, text=player.contracts_draft[i].description)
+            description_label.pack(pady=10)
+            description_label = tk.Label(self.root, text=rewards_text[i])
+            description_label.pack(pady=10)
             tk.Button(self.root, text="Take this contract", command=lambda i=i: self.TakeContract(i)).pack(pady=10)
+            description_label = tk.Label(self.root, text="================================================")
+            description_label.pack(pady=10)
 
 
 
