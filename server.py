@@ -146,11 +146,11 @@ class Server():
         if(i==0):
             return(0,0,255)
         if(i==1):
-            return(0,255,255)
+            return(16,86,37)
         if(i==2):
-            return(255,0,200)
+            return(210,10,10)
         if(i==3):
-            return(200,200,200)
+            return(119,0,136)
     
     def ValidatePlay(self):
         print("Action valide pour ce joueur")
